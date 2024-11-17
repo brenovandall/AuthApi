@@ -6,7 +6,7 @@ using System.Text;
 
 namespace AuthApi.App.OptionsSetup;
 
-public class JwtBearerOptionsSetup : IConfigureOptions<JwtBearerOptions>
+public class JwtBearerOptionsSetup : IConfigureNamedOptions<JwtBearerOptions>
 {
     private readonly JwtOptions _jwtOptions;
 
@@ -16,6 +16,10 @@ public class JwtBearerOptionsSetup : IConfigureOptions<JwtBearerOptions>
     }
 
     public void Configure(JwtBearerOptions options)
+    {
+    }
+
+    public void Configure(string? name, JwtBearerOptions options)
     {
         options.TokenValidationParameters = new()
         {

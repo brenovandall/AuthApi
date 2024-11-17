@@ -21,8 +21,8 @@ public class GetMembersEndpoint : ICarterModule
 
             return Results.Ok(response);
         })
-        .WithName("get-members")
         .RequireAuthorization()
+        .WithName("get-members")
         .Produces<GetMembersResponse>(StatusCodes.Status201Created)
         .ProducesProblem(StatusCodes.Status400BadRequest)
         .WithSummary("Proccess to get a list of members")

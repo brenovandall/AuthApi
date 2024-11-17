@@ -20,9 +20,9 @@ public class JwtProvider : IJwtProvider
         Claim[] claims =
         {
             new(JwtRegisteredClaimNames.Iss, _options.Issuer),
-            new(JwtRegisteredClaimNames.Nbf, DateTime.UtcNow.GetHashCode().ToString()),
+            new(JwtRegisteredClaimNames.Nbf, DateTime.Now.GetHashCode().ToString()),
             new(JwtRegisteredClaimNames.Iat, DateTime.Now.GetHashCode().ToString()),
-            new(JwtRegisteredClaimNames.Exp, DateTime.UtcNow.AddHours(1).GetHashCode().ToString()),
+            new(JwtRegisteredClaimNames.Exp, DateTime.Now.AddHours(1).GetHashCode().ToString()),
             new(JwtRegisteredClaimNames.Amr, "pwd"),
             new(JwtRegisteredClaimNames.Sub, member.Id.Value.ToString()),
             new(JwtRegisteredClaimNames.AuthTime, DateTime.Now.GetHashCode().ToString()),
@@ -39,8 +39,8 @@ public class JwtProvider : IJwtProvider
             issuer: _options.Issuer,
             audience: _options.Audience,
             claims: claims,
-            notBefore: DateTime.UtcNow,
-            expires: DateTime.UtcNow.AddHours(1),
+            notBefore: DateTime.Now,
+            expires: DateTime.Now.AddHours(1),
             signingCredentials: signingCredentials);
 
         string tokenValue = new JwtSecurityTokenHandler()
