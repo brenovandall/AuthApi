@@ -1,4 +1,6 @@
 ﻿using AuthApi.Application.Abstractions;
+using AuthApi.Application.Helper.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -13,6 +15,10 @@ public static class DependencyInjection
             config.RegisterServicesFromAssembly(assembly));
 
         services.AddScoped<IJwtProvider, JwtProvider>();
+        services.AddScoped<IPermissionService, PermissionService>();
+
+        services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+        services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
 
         return services;
     }

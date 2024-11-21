@@ -1,5 +1,7 @@
 ﻿using AuthApi.Application.Dtos;
+using AuthApi.Application.Helper.Authentication;
 using AuthApi.Application.Member.Queries.GetMembers;
+using AuthApi.Domain.Enums;
 using Carter;
 using Mapster;
 using MediatR;
@@ -13,7 +15,7 @@ public class GetMembersEndpoint : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("/members", async (ISender sender) =>
+        app.MapGet("/members", [HasPermission(Permission.ReadMember)] async (ISender sender) =>
         {
             var result = await sender.Send(new GetMembersQuery());
 

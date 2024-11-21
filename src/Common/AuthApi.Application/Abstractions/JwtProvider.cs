@@ -26,8 +26,8 @@ public class JwtProvider : IJwtProvider
             new(JwtRegisteredClaimNames.Amr, "pwd"),
             new(JwtRegisteredClaimNames.Sub, member.Id.Value.ToString()),
             new(JwtRegisteredClaimNames.AuthTime, DateTime.Now.GetHashCode().ToString()),
-            new(JwtRegisteredClaimNames.Sid, Guid.NewGuid().ToString().ToUpper().Replace("-", ""), ClaimTypes.Sid),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString().ToUpper(),"JWT Id")
+            new(JwtRegisteredClaimNames.Sid, Guid.NewGuid().ToString().ToUpper().Replace("-", "")),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString().ToUpper())
         };
 
         var signingCredentials = new SigningCredentials(

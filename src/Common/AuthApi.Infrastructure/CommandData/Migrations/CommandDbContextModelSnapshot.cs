@@ -48,7 +48,145 @@ namespace AuthApi.Infrastructure.CommandData.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Members");
+                    b.ToTable("Members", (string)null);
+                });
+
+            modelBuilder.Entity("AuthApi.Domain.Models.MemberRoles", b =>
+                {
+                    b.Property<Guid>("MemberId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("MemberId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("MemberRoles");
+                });
+
+            modelBuilder.Entity("AuthApi.Domain.Models.Permission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permissions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "ReadMember"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "UpdateMember"
+                        });
+                });
+
+            modelBuilder.Entity("AuthApi.Domain.Models.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Registered"
+                        });
+                });
+
+            modelBuilder.Entity("AuthApi.Domain.Models.RolePermission", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PermissionId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("RoleId", "PermissionId");
+
+                    b.HasIndex("PermissionId");
+
+                    b.ToTable("RolePermissions");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 1
+                        },
+                        new
+                        {
+                            RoleId = 1,
+                            PermissionId = 2
+                        });
+                });
+
+            modelBuilder.Entity("AuthApi.Domain.Models.MemberRoles", b =>
+                {
+                    b.HasOne("AuthApi.Domain.Models.Member", null)
+                        .WithMany("MemberRoles")
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AuthApi.Domain.Models.Role", null)
+                        .WithMany("MemberRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AuthApi.Domain.Models.RolePermission", b =>
+                {
+                    b.HasOne("AuthApi.Domain.Models.Permission", null)
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AuthApi.Domain.Models.Role", null)
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("AuthApi.Domain.Models.Member", b =>
+                {
+                    b.Navigation("MemberRoles");
+                });
+
+            modelBuilder.Entity("AuthApi.Domain.Models.Permission", b =>
+                {
+                    b.Navigation("RolePermissions");
+                });
+
+            modelBuilder.Entity("AuthApi.Domain.Models.Role", b =>
+                {
+                    b.Navigation("MemberRoles");
+
+                    b.Navigation("RolePermissions");
                 });
 #pragma warning restore 612, 618
         }

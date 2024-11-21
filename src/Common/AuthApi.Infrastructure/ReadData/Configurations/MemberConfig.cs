@@ -1,6 +1,7 @@
 ﻿using AuthApi.Domain.Enums;
 using AuthApi.Domain.Models;
 using AuthApi.Domain.ValueObjects;
+using AuthApi.Infrastructure.Consts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,6 +11,8 @@ public class MemberConfig : IEntityTypeConfiguration<Domain.Models.Member>
 {
     public void Configure(EntityTypeBuilder<Member> builder)
     {
+        builder.ToTable(TableNames.Members);
+
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Id).HasConversion(
@@ -29,7 +32,11 @@ public class MemberConfig : IEntityTypeConfiguration<Domain.Models.Member>
            dbLastName => LastName.Of(dbLastName));
 
         builder.Property(x => x.Plan)
-           .HasDefaultValue(Plan.None)
+           .HasDefaultValue(Plan.None) 
            .HasConversion(s => s.ToString(), dbPlan => (Plan)Enum.Parse(typeof(Plan), dbPlan));
+
+        builder.HasMany(x => x.MemberRoles)
+            .WithOne()
+            .HasForeignKey(x => x.MemberId);
     }
 }
