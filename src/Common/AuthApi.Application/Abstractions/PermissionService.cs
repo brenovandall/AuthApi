@@ -9,18 +9,17 @@ public class PermissionService (ICommandDbContext _context) : IPermissionService
 {
     public async Task<HashSet<string>> GetPermissionsAsync(MemberId memberId)
     {
-        //var upperId = MemberId.Of(memberId.Value).Value.ToString().ToUpper();
+        var upperId = MemberId.Of(memberId.Value).Value.ToString().ToUpper();
 
-        //ICollection<Role> roles = _context.Members
-        //    .Include(x => x)
-        //    .Where(member => member.Id == MemberId.Of(Guid.Parse(upperId)))
-        //    .ToList();
+        ICollection<Role> roles = _context.Members
+            .Include(x => x.Roles)
+            .Where(member => member.Id == MemberId.Of(Guid.Parse(upperId)))
+            .SelectMany(x => x.Roles)
+            .ToList();
 
-        //return roles
-        //    .SelectMany(x => x.Permissions)
-        //    .Select(x => x.Name)
-        //    .ToHashSet();
-
-        return new HashSet<string> { };
+        return roles
+            .SelectMany(x => x.Permissions)
+            .Select(x => x.Name)
+            .ToHashSet();
     }
 }

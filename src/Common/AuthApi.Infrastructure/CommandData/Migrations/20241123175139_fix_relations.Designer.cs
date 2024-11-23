@@ -3,6 +3,7 @@ using System;
 using AuthApi.Infrastructure.CommandData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AuthApi.Infrastructure.CommandData.Migrations
 {
     [DbContext(typeof(CommandDbContext))]
-    partial class CommandDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241123175139_fix_relations")]
+    partial class fix_relations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
