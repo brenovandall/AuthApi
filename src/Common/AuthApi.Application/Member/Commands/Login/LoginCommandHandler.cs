@@ -21,7 +21,7 @@ public class LoginCommandHandler (IReadDbContext _readContext, IJwtProvider _jwt
         if (member is null)
             throw new BadRequestException(DomainErrors.Member.InvalidCredentials);
 
-        string token = _jwtProvider.Generate(member);
+        string token = await _jwtProvider.GenerateAsync(member);
 
         return new LoginResult(token);
     }

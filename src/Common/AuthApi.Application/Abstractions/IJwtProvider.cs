@@ -2,5 +2,5 @@
 
 public interface IJwtProvider
 {
-    string Generate(Domain.Models.Member member);
+    Task<string> GenerateAsync(Domain.Models.Member member);
 }

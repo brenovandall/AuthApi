@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using AuthApi.Application.Abstractions.Consts;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -9,15 +10,17 @@ namespace AuthApi.Application.Abstractions;
 public class JwtProvider : IJwtProvider
 {
     private readonly JwtOptions _options;
+    private readonly IPermissionService _permissionService;
 
-    public JwtProvider(IOptions<JwtOptions> options)
+    public JwtProvider(IOptions<JwtOptions> options, IPermissionService permissionService)
     {
         _options = options.Value;
+        _permissionService = permissionService;
     }
 
-    public string Generate(Domain.Models.Member member)
+    public async Task<string> GenerateAsync(Domain.Models.Member member)
     {
-        Claim[] claims =
+        List<Claim> claims = new()
         {
             new(JwtRegisteredClaimNames.Iss, _options.Issuer),
             new(JwtRegisteredClaimNames.Nbf, DateTime.Now.GetHashCode().ToString()),
@@ -29,6 +32,13 @@ public class JwtProvider : IJwtProvider
             new(JwtRegisteredClaimNames.Sid, Guid.NewGuid().ToString().ToUpper().Replace("-", "")),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString().ToUpper())
         };
+
+        var permissions = await _permissionService.GetPermissionsAsync(member.Id);
+
+        foreach (var permission in permissions)
+        {
+            claims.Add(new(CustomClaims.Permissions, permission));
+        }
 
         var signingCredentials = new SigningCredentials(
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey)),
