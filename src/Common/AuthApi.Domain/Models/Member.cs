@@ -11,7 +11,7 @@ public class Member : Aggregate<MemberId>
     public FirstName FirstName { get; private set; }
     public LastName LastName { get; private set; }
     public Plan Plan { get; private set; }
-    public IList<MemberRoles> MemberRoles { get; set; } = [];
+    public ICollection<Role> Roles { get; set; } = [];
 
     public static Member Create(MemberId id, Email email, FirstName firstName, LastName lastName, Plan plan)
     {

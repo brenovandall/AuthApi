@@ -1,5 +1,4 @@
-using System;
-using AuthApi.Domain.Models;
+﻿using AuthApi.Domain.Models;
 using AuthApi.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -13,19 +12,16 @@ public class MemberRolesConfig : IEntityTypeConfiguration<MemberRoles>
         builder.HasKey(x => new { x.MemberId, x.RoleId });
 
         builder.Property(x => x.MemberId)
-        .HasConversion(
-            id => id.Value,
-            dbId => MemberId.Of(dbId)
-        );
+            .HasConversion(
+                id => id.Value,
+                dbId => MemberId.Of(dbId));
 
-        builder.HasOne<Member>()
-            .WithMany(m => m.MemberRoles)
-            .HasForeignKey(x => x.MemberId)
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne(x => x.Member)
+            .WithMany()
+            .HasForeignKey(x => x.MemberId);
 
-        builder.HasOne<Role>()
-            .WithMany(r => r.MemberRoles)
-            .HasForeignKey(x => x.RoleId)
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne(x => x.Role)
+            .WithMany()
+            .HasForeignKey(x => x.RoleId);
     }
 }

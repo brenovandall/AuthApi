@@ -14,14 +14,6 @@ public class RoleConfig : IEntityTypeConfiguration<Role>
 
         builder.HasKey(x => x.Id);
 
-        builder.HasMany(x => x.RolePermissions)
-            .WithOne()
-            .HasForeignKey(x => x.PermissionId);
-
-        builder.HasMany(x => x.MemberRoles)
-            .WithOne()
-            .HasForeignKey(x => x.RoleId);
-
-        //builder.HasData(Role.GetValues());
+        builder.HasData(Role.GetValues());
     }
 }

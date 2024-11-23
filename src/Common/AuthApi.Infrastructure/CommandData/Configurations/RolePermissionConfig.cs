@@ -11,20 +11,18 @@ public class RolePermissionConfig : IEntityTypeConfiguration<RolePermission>
     {
         builder.HasKey(x => new { x.RoleId, x.PermissionId });
 
-        // builder.HasData(
-        //     Create(Role.Registered, Domain.Enums.Permission.ReadMember),
-        //     Create(Role.Registered, Domain.Enums.Permission.UpdateMember)
-        // );
+        builder.HasData(
+            Create(Role.Registered, Domain.Enums.Permission.ReadMember),
+            Create(Role.Registered, Domain.Enums.Permission.UpdateMember)
+        );
 
-        builder.HasOne<Domain.Models.Permission>()
-            .WithMany(m => m.RolePermissions)
-            .HasForeignKey(x => x.PermissionId)
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne(x => x.Role)
+            .WithMany()
+            .HasForeignKey(x => x.RoleId);
 
-        builder.HasOne<Domain.Models.Role>()
-            .WithMany(m => m.RolePermissions)
-            .HasForeignKey(x => x.RoleId)
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne(x => x.Permission)
+            .WithMany()
+            .HasForeignKey(x => x.PermissionId);
     }
 
     private static RolePermission Create(Role role, Domain.Enums.Permission permission)

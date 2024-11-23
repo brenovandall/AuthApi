@@ -37,8 +37,8 @@ public class MemberConfig : IEntityTypeConfiguration<Domain.Models.Member>
            .HasDefaultValue(Plan.None) 
            .HasConversion(s => s.ToString(), dbPlan => (Plan)Enum.Parse(typeof(Plan), dbPlan));
 
-        builder.HasMany(x => x.MemberRoles)
-            .WithOne()
-            .HasForeignKey(x => x.MemberId);
+        builder.HasMany(x => x.Roles)
+            .WithMany()
+            .UsingEntity<MemberRoles>();
     }
 }

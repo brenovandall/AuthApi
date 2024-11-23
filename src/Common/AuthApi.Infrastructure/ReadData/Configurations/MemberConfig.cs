@@ -32,11 +32,7 @@ public class MemberConfig : IEntityTypeConfiguration<Domain.Models.Member>
            dbLastName => LastName.Of(dbLastName));
 
         builder.Property(x => x.Plan)
-           .HasDefaultValue(Plan.None) 
+           .HasDefaultValue(Plan.None)
            .HasConversion(s => s.ToString(), dbPlan => (Plan)Enum.Parse(typeof(Plan), dbPlan));
-
-        builder.HasMany(x => x.MemberRoles)
-            .WithOne()
-            .HasForeignKey(x => x.MemberId);
     }
 }

@@ -10,6 +10,6 @@ public sealed class Role : Enumeration<Role>
     {
     }
     
-    public ICollection<RolePermission> RolePermissions { get; set; } = [];
-    public IList<MemberRoles> MemberRoles { get; set; } = [];
+    public ICollection<Permission> Permissions { get; set; } = [];
+    public ICollection<Member> Members { get; set; } = [];
 }

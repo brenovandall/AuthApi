@@ -13,17 +13,17 @@ public class PermissionConfig : IEntityTypeConfiguration<Permission>
 
         builder.HasKey(x => x.Id);
 
-        builder.HasMany(x => x.RolePermissions)
-            .WithOne()
-            .HasForeignKey(x => x.PermissionId);
+        builder.HasMany(x => x.Roles)
+            .WithMany()
+            .UsingEntity<RolePermission>();
 
-        // IEnumerable<Permission> permissions = Enum.GetValues<Domain.Enums.Permission>()
-        //     .Select(x => new Permission
-        //     {
-        //         Id = (int)x,
-        //         Name = x.ToString(),
-        //     });
+        IEnumerable<Permission> permissions = Enum.GetValues<Domain.Enums.Permission>()
+            .Select(x => new Permission
+            {
+                Id = (int)x,
+                Name = x.ToString(),
+            });
 
-        // builder.HasData(permissions);
+        builder.HasData(permissions);
     }
 }

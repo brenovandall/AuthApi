@@ -18,4 +18,9 @@
     <ProjectReference Include="..\AuthApi.Application\AuthApi.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CommandData\Migrations\" />
+    <Folder Include="ReadData\Migrations\" />
+  </ItemGroup>
+
 </Project>
