@@ -24,7 +24,7 @@ public class CreateMemberEndpoint : ICarterModule
             return Results.Created($"members/{response.Id}", response);
         })
         .WithName("create-member")
-        //.RequireAuthorization()
+        .RequireAuthorization()
         .Produces<CreateMemberResult>(StatusCodes.Status201Created)
         .ProducesProblem(StatusCodes.Status400BadRequest)
         .WithSummary("Proccess to create a new member")

@@ -15,7 +15,10 @@ public class PermissionConfig : IEntityTypeConfiguration<Permission>
 
         builder.HasMany(x => x.Roles)
             .WithMany()
-            .UsingEntity<RolePermission>();
+            .UsingEntity<Dictionary<string, object>>(
+                TableNames.RolePermissions,
+                j => j.HasOne<Role>().WithMany().HasForeignKey("RoleId").OnDelete(DeleteBehavior.Cascade),
+                j => j.HasOne<Permission>().WithMany().HasForeignKey("PermissionId").OnDelete(DeleteBehavior.Cascade));
 
         IEnumerable<Permission> permissions = Enum.GetValues<Domain.Enums.Permission>()
             .Select(x => new Permission

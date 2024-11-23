@@ -22,6 +22,8 @@ public class CommandDbContext : DbContext, ICommandDbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
+        modelBuilder.UseCollation("NOCASE");
+
         base.OnModelCreating(modelBuilder);
     }
 }

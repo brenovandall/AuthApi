@@ -39,6 +39,9 @@ public class MemberConfig : IEntityTypeConfiguration<Domain.Models.Member>
 
         builder.HasMany(x => x.Roles)
             .WithMany()
-            .UsingEntity<MemberRoles>();
+            .UsingEntity<Dictionary<string, object>>(
+                TableNames.MemberRoles,
+                j => j.HasOne<Role>().WithMany().HasForeignKey("RoleId").OnDelete(DeleteBehavior.Cascade),
+                j => j.HasOne<Member>().WithMany().HasForeignKey("MemberId").OnDelete(DeleteBehavior.Cascade));
     }
 }

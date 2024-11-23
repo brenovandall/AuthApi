@@ -16,11 +16,17 @@ public class RoleConfig : IEntityTypeConfiguration<Role>
 
         builder.HasMany(x => x.Members)
             .WithMany()
-            .UsingEntity<MemberRoles>();
+            .UsingEntity<Dictionary<string, object>>(
+                TableNames.MemberRoles,
+                j => j.HasOne<Member>().WithMany().HasForeignKey("MemberId").OnDelete(DeleteBehavior.Cascade),
+                j => j.HasOne<Role>().WithMany().HasForeignKey("RoleId").OnDelete(DeleteBehavior.Cascade));
 
         builder.HasMany(x => x.Permissions)
             .WithMany()
-            .UsingEntity<MemberRoles>();
+            .UsingEntity<Dictionary<string, object>>(
+                TableNames.RolePermissions,
+                j => j.HasOne<Permission>().WithMany().HasForeignKey("PermissionId").OnDelete(DeleteBehavior.Cascade),
+                j => j.HasOne<Role>().WithMany().HasForeignKey("RoleId").OnDelete(DeleteBehavior.Cascade));
 
         builder.HasData(Role.GetValues());
     }
