@@ -21,9 +21,8 @@ public static class DependencyInjection
             options.UseSqlite(configuration.GetConnectionString("c_db_connection"));
         });
 
-        services.AddDbContext<ReadDbContext>((sp, options) =>
+        services.AddDbContext<ReadDbContext>(options =>
         {
-            options.AddInterceptors(sp.GetServices<ISaveChangesInterceptor>());
             options.UseSqlite(configuration.GetConnectionString("r_db_connection"));
         });
 
